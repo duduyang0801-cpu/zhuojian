@@ -376,73 +376,61 @@ function homeTemplate() {
   return `
     <section class="home-hero">
       <div class="hero-copy">
-        <span class="eyebrow">Tonight's pairing guide</span>
-        <h1>今晚，<br><em>酌什么？</em></h1>
-        <p>跟着当下的口味和心情，找到恰好适合今晚的一杯，或是一道愿意与朋友分享的食物。</p>
-        <div class="hero-meta">
-          <span class="meta-pill">按心情选择</span>
-          <span class="meta-pill">酒食双向搭配</span>
-          <span class="meta-pill">专属 DIY</span>
+        <span class="eyebrow">A clear choice for tonight</span>
+        <h1>今晚，先喝<br><em>还是先吃？</em></h1>
+        <p>不需要一次想完。先从酒或食物选一个起点，再一页页调味道、心情和场景；另一项始终可以跳过，想搭配时再继续。</p>
+        <div class="guide-steps" aria-label="选择方式">
+          <div><span>01</span><strong>先选一个起点</strong><p>选酒，先决定今晚喝什么；选食物，先决定桌上吃什么。</p></div>
+          <div><span>02</span><strong>每页只选一件事</strong><p>味道、心情与搭配会分开出现，确认后才进入下一页。</p></div>
+          <div><span>03</span><strong>再决定要不要搭配</strong><p>先收一份推荐；需要时，再让酒和食物在下一步相遇。</p></div>
         </div>
+        <div class="landing-action"><button class="primary-button" data-action="show-start">从酒或食物开始 <span aria-hidden="true">→</span></button><span>共 6 页，每页只做一个选择</span></div>
       </div>
       <div class="hero-visual" role="img" aria-label="暖色灯光下的葡萄酒杯">
         <div class="hero-caption">
-          <div><strong>一杯刚刚好</strong><span>不必懂酒，只需要知道现在的感觉</span></div>
+          <div><strong>不需要懂酒</strong><span>只要知道今天想要什么感觉</span></div>
           <span class="caption-code">VOL. 01</span>
         </div>
       </div>
-    </section>
-
-    <section>
-      <div class="section-heading">
-        <h2>从哪里开始？</h2>
-        <p>另一项随时可以跳过</p>
-      </div>
-      <div class="mode-grid">
-        <button class="mode-card wine-card" data-action="choose-wine">
-          <div><span class="mode-kicker">Start with a drink</span><h3>先选一杯</h3><p>从甜、酸、酒精感和今晚的心情开始。</p></div>
-          <span class="mode-arrow">↗</span>
-        </button>
-        <button class="mode-card food-card" data-action="choose-food">
-          <div><span class="mode-kicker">Start with a bite</span><h3>先选一口</h3><p>从口味、食材与分享方式开始。</p></div>
-          <span class="mode-arrow">↗</span>
-        </button>
-      </div>
-      <div class="action-row" style="justify-content:center;margin-top:16px">
-        <button class="ghost-button" data-action="random-pick">交给今晚的运气</button>
-      </div>
-    </section>
-
-    <section class="inspiration-section">
-      <div class="section-heading">
-        <h2>今晚的灵感</h2>
-        <p>三个不需要犹豫的开场</p>
-      </div>
-      <div class="inspiration-grid">
-        <button class="inspiration-card" data-open-id="lemon-tart">
-          <div class="inspiration-image"></div><h4>酸甜之后</h4><p>盐渍柠檬挞，适合让聚会慢慢收尾。</p><div class="inspiration-code">DESSERT / 01</div>
-        </button>
-        <button class="inspiration-card" data-open-id="grapefruit-gin-tonic">
-          <div class="inspiration-image"></div><h4>西柚与气泡</h4><p>清爽、微苦，是最轻松的一杯开场。</p><div class="inspiration-code">COCKTAIL / 02</div>
-        </button>
-        <button class="inspiration-card" data-open-id="burrata-tomato">
-          <div class="inspiration-image"></div><h4>番茄与奶香</h4><p>不用开火，也足够漂亮的分享冷盘。</p><div class="inspiration-code">FOOD / 03</div>
-        </button>
-      </div>
-    </section>
-
-    <div class="footer-note">
-      <strong>不懂酒，也可以选得很好。</strong>
-      <p>每次选择都会留下一点偏好，让下一次更接近你。</p>
-    </div>`;
+    </section>`;
 }
 
 function renderHome() {
+  document.body.classList.remove("is-choosing");
+  document.body.classList.add("is-landing");
   state.view = "home";
   state.mode = null;
   app.innerHTML = homeTemplate();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
   updateSavedCount();
+}
+
+function renderEntry() {
+  document.body.classList.remove("is-landing");
+  document.body.classList.add("is-choosing");
+  state.view = "entry";
+  app.innerHTML = `
+    <section class="entry-shell" aria-label="选择起点">
+      <header class="wizard-top">
+        <div class="wizard-kicker"><span class="eyebrow">Choose a starting point</span><span class="wizard-counter">START</span></div>
+        <div class="wizard-progress entry-progress" aria-hidden="true"><span class="step-dot active"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+      </header>
+      <div class="entry-view">
+        <div class="wizard-question"><span class="question-code">BEGIN</span><h1>你想先决定什么？</h1><p><strong>先选酒</strong>，就先找到今晚喝什么；<strong>先选食物</strong>，就先定桌上吃什么。两条路都能独立完成，需要搭配时再选另一项。</p></div>
+        <div class="entry-grid">
+          <button class="mode-card wine-card" data-action="choose-wine">
+            <div><span class="mode-kicker">Start with a drink</span><h3>先决定喝什么</h3><p><strong>适合：</strong>已经想喝一点，却还没有方向。接着逐页细化口味和场景。</p></div>
+            <span class="mode-arrow">↗</span>
+          </button>
+          <button class="mode-card food-card" data-action="choose-food">
+            <div><span class="mode-kicker">Start with a bite</span><h3>先决定吃什么</h3><p><strong>适合：</strong>想先把桌上的食物定下来。接着逐页细化口感和分享方式。</p></div>
+            <span class="mode-arrow">↗</span>
+          </button>
+        </div>
+      </div>
+      <footer class="wizard-actions"><button class="outline-button" data-action="home">返回介绍</button><button class="ghost-button" data-action="random-pick">还没有想法，给我一张灵感</button></footer>
+    </section>`;
+  window.scrollTo(0, 0);
 }
 
 function beginChooser(mode) {
@@ -455,127 +443,74 @@ function beginChooser(mode) {
 }
 
 function renderChooser() {
+  document.body.classList.remove("is-landing");
+  document.body.classList.add("is-choosing");
   const isWine = state.mode === "wine";
   const labels = rangeLabels[state.mode];
   const selectedProfile = state.profile;
   const step = state.step;
-  const stepNames = ["STYLE", "TASTE", "MOOD", "PAIRING", "TYPE"];
-  const stepTitles = isWine
-    ? ["先挑一个今晚的方向", "把味道拉到舒服的位置", "把心情放进这一杯", "想和什么一起出现？", "最后决定酒的类别"]
-    : ["先挑一个今晚的方向", "把口感拉到舒服的位置", "把心情放进这一口", "想在桌上分享什么？", "最后决定食物的形式"];
-  const stepDescriptions = isWine
-    ? ["先选一个接近的风格，后面的每一步都会继续细化它。", "每个味道独立调整，不需要把所有数值凑成 100%。", "拖到最接近今晚能量的位置，系统会把它用于匹配。", "这一步可以跳过，另一项不会被强制绑定。", "保持不限也没关系，让口味替你决定。"]
-    : ["先选一个接近的风格，后面的每一步都会继续细化它。", "每个口感独立调整，不需要把所有数值凑成 100%。", "拖到最接近今晚能量的位置，系统会把它用于匹配。", "这一步可以跳过，另一项不会被强制绑定。", "保持不限也没关系，让口味替你决定。"];
+  const tasteGroups = isWine
+    ? [
+        { keys: ["sweet", "sour", "bitter"], code: "PALATE", title: "先定第一口的味道", description: "甜、酸、苦各自独立。只要把它们拉到你愿意再喝一口的位置。" },
+        { keys: ["alcohol", "fresh", "fruit"], code: "CHARACTER", title: "再定它的轻重与香气", description: "这一页决定酒精感、清爽度和果香，不需要让所有数值相加等于 100%。" }
+      ]
+    : [
+        { keys: ["spicy", "salty", "sour"], code: "PALATE", title: "先定最直接的口感", description: "辣、咸、酸各自独立。把它们拉到今天想吃的程度。" },
+        { keys: ["sweet", "umami", "rich"], code: "CHARACTER", title: "再定它的厚薄与余味", description: "这一页决定甜味、鲜味和浓郁度，让推荐更像真正想上桌的食物。" }
+      ];
+  const steps = [
+    { code: "DIRECTION", title: "先挑一个今晚的方向", description: "选一个接近的风格，或直接下一步。后面的选择会继续细化它。", kind: "preset" },
+    { ...tasteGroups[0], kind: "ranges" },
+    { ...tasteGroups[1], kind: "ranges" },
+    { code: "MOOD", title: isWine ? "把心情放进这一杯" : "把心情放进这一口", description: "拖到最接近今晚能量的位置。它会参与推荐，但不用替你定义今晚。", kind: "mood" },
+    { code: "PAIRING", title: isWine ? "它想和什么一起出现？" : "它想在怎样的桌上出现？", description: "这一步可跳过。选择只是在告诉我们你希望它和什么搭配，或怎么被分享。", kind: "tags" },
+    { code: "TYPE", title: isWine ? "最后决定酒的类别" : "最后决定食物的形式", description: "保持“不限类别”也没有关系，让前面的感觉替你作决定。", kind: "category" }
+  ];
+  const current = steps[step - 1];
+  let controls = "";
 
-  let stepPanel = "";
-  if (step === 1) {
-    stepPanel = `
-      <section class="panel wizard-panel">
-        <div class="panel-title"><h2>${stepTitles[0]}</h2><span>01 / ${stepNames[0]}</span></div>
-        <p class="wizard-description">${stepDescriptions[0]}</p>
-        <div class="chip-grid">
-          ${Object.keys(presets[state.mode]).map(name => `<button class="chip ${state.preset === name ? "selected" : ""}" data-preset="${name}">${name}</button>`).join("")}
-        </div>
-        <div class="wizard-actions">
-          <button class="outline-button" data-action="home">返回首页</button>
-          <button class="primary-button" data-action="next-step">下一步 <span aria-hidden="true">→</span></button>
-        </div>
-      </section>`;
-  } else if (step === 2) {
-    stepPanel = `
-      <section class="panel wizard-panel">
-        <div class="panel-title"><h2>${stepTitles[1]}</h2><span>02 / ${stepNames[1]}</span></div>
-        <p class="wizard-description">${stepDescriptions[1]}</p>
-        <div class="range-list">
-          ${Object.entries(labels).map(([key, name]) => `
-            <label class="range-row">
-              <span class="range-name">${name}</span>
-              <input type="range" min="0" max="100" value="${selectedProfile[key]}" data-range="${key}" aria-label="${name}">
-              <span class="range-value" data-range-value="${key}">${selectedProfile[key]}%</span>
-            </label>`).join("")}
-        </div>
-        <div class="wizard-actions">
-          <button class="outline-button" data-action="prev-step">上一步</button>
-          <button class="primary-button" data-action="next-step">下一步 <span aria-hidden="true">→</span></button>
-        </div>
-      </section>`;
-  } else if (step === 3) {
-    stepPanel = `
-      <section class="panel wizard-panel">
-        <div class="panel-title"><h2>${stepTitles[2]}</h2><span>03 / ${stepNames[2]}</span></div>
-        <p class="wizard-description">${stepDescriptions[2]}</p>
-        <div class="mood-slider-card">
-          <div class="mood-slider-heading"><span>今晚的能量</span><strong id="moodSelected">${state.mood}</strong></div>
-          <input class="mood-range" type="range" min="0" max="100" value="${state.moodValue}" data-mood-range aria-label="心情">
-          <div class="mood-scale" aria-hidden="true">
-            ${moodStops.map(stop => `<span style="left:${stop.value}%">${stop.label}</span>`).join("")}
-          </div>
-          <div class="mood-slider-value"><span>更安静</span><span id="moodValueText">${state.moodValue}%</span><span>更有能量</span></div>
-        </div>
-        <div class="wizard-actions">
-          <button class="outline-button" data-action="prev-step">上一步</button>
-          <button class="primary-button" data-action="next-step">下一步 <span aria-hidden="true">→</span></button>
-        </div>
-      </section>`;
-  } else if (step === 4) {
-    stepPanel = `
-      <section class="panel wizard-panel">
-        <div class="panel-title"><h2>${stepTitles[3]}</h2><span>04 / ${stepNames[3]}</span></div>
-        <p class="wizard-description">${stepDescriptions[3]}</p>
-        <div class="chip-grid">
-          ${modeTags[state.mode].map(tag => `<button class="chip ${state.tags.includes(tag) ? "selected soft" : ""}" data-tag="${tag}">${tag}</button>`).join("")}
-        </div>
-        <div class="wizard-actions">
-          <button class="outline-button" data-action="prev-step">上一步</button>
-          <button class="primary-button" data-action="next-step">下一步 <span aria-hidden="true">→</span></button>
-        </div>
-      </section>`;
+  if (current.kind === "preset") {
+    controls = `<div class="chip-grid">${Object.keys(presets[state.mode]).map(name => `<button class="chip ${state.preset === name ? "selected" : ""}" data-preset="${name}">${name}</button>`).join("")}</div>`;
+  } else if (current.kind === "ranges") {
+    controls = `<div class="range-list">${current.keys.map(key => {
+      const name = labels[key];
+      return `<label class="range-row"><span class="range-name">${name}</span><input type="range" min="0" max="100" value="${selectedProfile[key]}" data-range="${key}" aria-label="${name}"><span class="range-value" data-range-value="${key}">${selectedProfile[key]}%</span></label>`;
+    }).join("")}</div>`;
+  } else if (current.kind === "mood") {
+    controls = `
+      <div class="mood-slider-card">
+        <div class="mood-slider-heading"><span>今晚的能量</span><strong id="moodSelected">${state.mood}</strong></div>
+        <input class="mood-range" type="range" min="0" max="100" value="${state.moodValue}" data-mood-range aria-label="心情">
+        <div class="mood-scale" aria-hidden="true">${moodStops.map(stop => `<span style="left:${stop.value}%">${stop.label}</span>`).join("")}</div>
+        <div class="mood-slider-value"><span>更安静</span><span id="moodValueText">${state.moodValue}%</span><span>更有能量</span></div>
+      </div>`;
+  } else if (current.kind === "tags") {
+    controls = `<div class="chip-grid">${modeTags[state.mode].map(tag => `<button class="chip ${state.tags.includes(tag) ? "selected soft" : ""}" data-tag="${tag}">${tag}</button>`).join("")}</div>`;
   } else {
-    stepPanel = `
-      <section class="panel wizard-panel">
-        <div class="panel-title"><h2>${stepTitles[4]}</h2><span>05 / ${stepNames[4]}</span></div>
-        <p class="wizard-description">${stepDescriptions[4]}</p>
-        <div class="chip-grid">
-          ${categoryTags[state.mode].map(tag => `<button class="chip ${state.category === tag ? "selected" : ""}" data-category="${tag}">${tag}</button>`).join("")}
-        </div>
-        <div class="wizard-actions">
-          <button class="outline-button" data-action="prev-step">上一步</button>
-          <button class="primary-button" data-action="generate">生成推荐 <span aria-hidden="true">↗</span></button>
-        </div>
-      </section>`;
+    controls = `<div class="chip-grid">${categoryTags[state.mode].map(tag => `<button class="chip ${state.category === tag ? "selected" : ""}" data-category="${tag}">${tag}</button>`).join("")}</div>`;
   }
 
   app.innerHTML = `
-    <section class="flow-header">
-      <div>
-        <span class="eyebrow">${isWine ? "Choose a drink" : "Choose a bite"}</span>
-        <h1>${isWine ? "把今晚调成喜欢的味道" : "把今晚摆成想吃的样子"}</h1>
-        <div class="stepper" aria-label="当前进度">
-          ${stepNames.map((name, index) => `<span class="step-dot ${index + 1 === step ? "active" : index + 1 < step ? "done" : ""}" title="${name}"></span>`).join("")}
+    <section class="wizard-shell" aria-label="${isWine ? "选酒" : "选食物"}流程">
+      <header class="wizard-top">
+        <div class="wizard-kicker"><span class="eyebrow">${isWine ? "Choose a drink" : "Choose a bite"}</span><span class="wizard-counter">第 ${String(step).padStart(2, "0")} / ${String(steps.length).padStart(2, "0")} 步</span></div>
+        <div class="wizard-progress" role="progressbar" aria-label="选择进度" aria-valuemin="1" aria-valuemax="${steps.length}" aria-valuenow="${step}">
+          ${steps.map((item, index) => `<span class="step-dot ${index + 1 === step ? "active" : index + 1 < step ? "done" : ""}" title="${item.code}"></span>`).join("")}
         </div>
+      </header>
+      <div class="wizard-view">
+        <div class="wizard-question"><span class="question-code">${current.code}</span><h1>${current.title}</h1><p>${current.description}</p></div>
+        <section class="panel wizard-panel wizard-panel--${current.kind}">${controls}</section>
       </div>
-      <p>${stepDescriptions[step - 1]}</p>
-    </section>
-    <div class="chooser-layout">
-      <div>${stepPanel}</div>
-
-      <aside class="sticky-summary">
-        <div class="summary-card">
-          <span class="eyebrow">Your mood tonight</span>
-          <h2>${isWine ? "今晚这杯的轮廓" : "今晚这一口的轮廓"}</h2>
-          <p>${isWine ? "我们会在经典酒款和鸡尾酒之间，寻找最接近这个轮廓的选择。" : "我们会兼顾味道、准备方式和分享场景，给出一道真正能落地的选择。"}</p>
-          <div class="summary-divider"></div>
-          <div class="summary-progress"><span>当前步骤</span><strong>${String(step).padStart(2, "0")} / 05</strong></div>
-          <div class="summary-tags" id="summaryTags"></div>
-          <p class="summary-quote" id="summaryQuote"></p>
-        </div>
-        <p class="microcopy">每一步都可以回到上一步修改。</p>
-      </aside>
-    </div>`;
+      <footer class="wizard-actions">
+        <button class="outline-button" data-action="${step === 1 ? "home" : "prev-step"}">${step === 1 ? "返回首页" : "上一步"}</button>
+        <button class="primary-button" data-action="${step === steps.length ? "generate" : "next-step"}">${step === steps.length ? "生成推荐" : "下一步"} <span aria-hidden="true">${step === steps.length ? "↗" : "→"}</span></button>
+      </footer>
+    </section>`;
   paintRanges();
   paintMoodRange();
   updateSummary();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 function paintRanges() {
@@ -642,6 +577,7 @@ function generateRecommendation() {
 }
 
 function renderResult() {
+  document.body.classList.remove("is-choosing", "is-landing");
   state.view = "result";
   const item = state.result;
   const isWine = item.kind === "wine";
@@ -689,7 +625,7 @@ function renderResult() {
         </div>
       </div>
     </div>`;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 function reroll() {
@@ -736,6 +672,7 @@ function setupDiy() {
 }
 
 function renderDiy() {
+  document.body.classList.remove("is-choosing", "is-landing");
   state.view = "diy";
   if (!Object.keys(state.diy).length) setupDiy();
   const isWine = state.mode === "wine";
@@ -772,7 +709,7 @@ function renderDiy() {
         <section class="diy-output" id="diyOutput">${diyOutputTemplate()}</section>
       </div>
     </div>`;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 function diyOutputTemplate() {
@@ -818,6 +755,7 @@ function updateSavedCount() {
 }
 
 function renderSaved() {
+  document.body.classList.remove("is-choosing", "is-landing");
   state.view = "saved";
   const items = state.saved.map(id => catalog.find(item => item.id === id)).filter(Boolean);
   app.innerHTML = `
@@ -825,7 +763,7 @@ function renderSaved() {
       <section class="saved-header"><span class="eyebrow">Saved moments</span><h1>留给下一次的味道</h1></section>
       ${items.length ? `<div class="saved-list">${items.map(item => `<button class="saved-row" data-open-id="${item.id}"><span class="saved-row-thumb" style="background-image:url('${item.image}')"></span><span><h3>${item.name}</h3><p>${item.tags.slice(0, 4).join(" · ")}</p></span><span class="saved-kind">${item.kind === "wine" ? "酒" : "食"}</span></button>`).join("")}</div>` : `<div class="saved-empty"><strong>这里还空着。</strong><p>遇到喜欢的酒或食物时，点一下星标，它就会留在这里。</p><button class="primary-button" data-action="home">回到首页</button></div>`}
     </div>`;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 function openCatalogItem(id) {
@@ -900,11 +838,12 @@ document.addEventListener("click", event => {
   if (!actionButton) return;
   const action = actionButton.dataset.action;
   if (action === "home") renderHome();
+  if (action === "show-start") renderEntry();
   if (action === "choose-wine") beginChooser("wine");
   if (action === "choose-food") beginChooser("food");
   if (action === "random-pick") randomPick();
   if (action === "next-step") {
-    if (state.step < 5) {
+    if (state.step < 6) {
       state.step += 1;
       renderChooser();
     } else generateRecommendation();
