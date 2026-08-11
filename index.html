@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171714" />
+    <meta name="description" content="酌间：为今晚找到一杯酒，也找到适合分享的食物。" />
+    <title>酌间 · 找到今晚的味道</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand-button" data-action="home" aria-label="回到首页">
+          <span class="brand-mark">酌</span>
+          <span class="brand-copy">
+            <strong>酌间</strong>
+            <small>taste the moment</small>
+          </span>
+        </button>
+        <div class="topbar-actions">
+          <button class="icon-button" data-action="show-saved" aria-label="查看收藏" title="收藏">
+            <span class="icon-star">☆</span>
+            <span class="saved-count" aria-hidden="true">0</span>
+          </button>
+          <button class="avatar-button" data-action="profile" aria-label="个人偏好" title="个人偏好">N</button>
+        </div>
+      </header>
+
+      <main id="app" class="page-content"></main>
+
+      <footer class="site-footer">
+        <span>酌间</span>
+        <span class="footer-dot"></span>
+        <span>今晚，和喜欢的人分享喜欢的味道</span>
+      </footer>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
